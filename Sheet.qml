@@ -19,6 +19,7 @@ Scope {
     property string theme: Themes.ORDER[0]
     property string language: "en"
     property bool themePicker: true
+    property bool parallax: true
     signal themePicked(string name)
 
     // Set while the picker highlights a theme; empty means `theme`.
@@ -158,10 +159,17 @@ Scope {
                 }
             }
 
+            HoverHandler {
+                id: pointer
+            }
+
             Backdrop {
                 anchors.fill: parent
                 t: root.t
                 running: root.open
+                parallax: root.parallax
+                aimX: pointer.hovered ? Math.max(-1, Math.min(1, pointer.point.position.x / width * 2 - 1)) : 0
+                aimY: pointer.hovered ? Math.max(-1, Math.min(1, pointer.point.position.y / height * 2 - 1)) : 0
             }
 
             MouseArea {

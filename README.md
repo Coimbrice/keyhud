@@ -87,6 +87,7 @@ as you save the file. All keys are optional:
 {
   "theme": "alien",
   "themePicker": true,
+  "parallax": true,
   "language": "en"
 }
 ```
@@ -96,6 +97,9 @@ as you save the file. All keys are optional:
   that previews each theme as you move over it (also `Ctrl+T`, then Up /
   Down and Enter). The theme picked there is remembered and wins over
   `theme`. Set it to `false` to hide the button and use `theme` only.
+- `parallax`: themes that support it (jurassic, for now) drift the
+  backdrop slightly against the mouse pointer. Set it to `false` to keep
+  the backdrop still.
 - `language`: `en` or `pt`. This only covers keyhud's own text (search
   label, panel titles, counters). Bind names are whatever your
   descriptions say.

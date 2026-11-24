@@ -9,6 +9,34 @@ Item {
 
     required property var t
     property bool running: false
+    property bool parallax: true
+    // How far (px) the backdrop drifts; the theme sets it, the config can zero it.
+    readonly property real depth: parallax ? t.parallax : 0
+
+    // Pointer over the sheet, -1..1 on each axis; 0 when it is elsewhere
+    // (another monitor), so the backdrop settles back to the middle.
+    property real aimX: 0
+    property real aimY: 0
+
+    // Two chained lerps: `lag` eases toward the pointer and `drift` follows
+    // `lag`, so the motion starts and stops softly and never overshoots.
+    property real lagX: 0
+    property real lagY: 0
+    property real driftX: 0
+    property real driftY: 0
+    readonly property bool settled: Math.abs(aimX - driftX) < 0.001 && Math.abs(aimY - driftY) < 0.001
+
+    FrameAnimation {
+        running: root.running && root.depth > 0 && !root.settled
+        onTriggered: {
+            // Same speed at any refresh rate: about 2% of the gap is left per second.
+            const k = 1 - Math.pow(0.02, frameTime);
+            root.lagX += (root.aimX - root.lagX) * k;
+            root.lagY += (root.aimY - root.lagY) * k;
+            root.driftX += (root.lagX - root.driftX) * k;
+            root.driftY += (root.lagY - root.driftY) * k;
+        }
+    }
 
     onTChanged: {
         contours.requestPaint();
@@ -23,10 +51,17 @@ Item {
     }
 
     // Jurassic: contour map.
+    // The map is the far layer: it drifts half as much as the range ring and
+    // overhangs the screen by the full amount, so its edges never show.
     Canvas {
         id: contours
         anchors.fill: parent
+        anchors.margins: -root.depth
         visible: root.t.contours
+        transform: Translate {
+            x: -root.driftX * root.depth * 0.5
+            y: -root.driftY * root.depth * 0.5
+        }
         opacity: 0.55
         renderStrategy: Canvas.Cooperative
         onWidthChanged: requestPaint()
@@ -93,6 +128,10 @@ Item {
         height: width
         anchors.centerIn: parent
         opacity: 0.35
+        transform: Translate {
+            x: -root.driftX * root.depth
+            y: -root.driftY * root.depth
+        }
 
         Canvas {
             id: sweep

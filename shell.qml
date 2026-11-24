@@ -15,6 +15,7 @@ ShellRoot {
     // From config.json; see config.example.json for what each one does.
     property string configTheme: Themes.ORDER[0]
     property bool themePicker: true
+    property bool parallax: true
     property string language: "en"
 
     property string savedTheme: ""
@@ -53,6 +54,7 @@ ShellRoot {
             }
             shell.configTheme = Themes.has(c.theme) ? c.theme : Themes.ORDER[0];
             shell.themePicker = c.themePicker !== false;
+            shell.parallax = c.parallax !== false;
             shell.language = typeof c.language === "string" ? c.language : "en";
             shell.applyTheme();
         }
@@ -95,6 +97,7 @@ ShellRoot {
         theme: shell.theme
         language: shell.language
         themePicker: shell.themePicker
+        parallax: shell.parallax
         onThemePicked: name => shell.setTheme(name)
     }
 
