@@ -5,14 +5,22 @@ screen out of a film or a game. It runs as its own
 [Quickshell](https://quickshell.org) config, so it works next to whatever
 bar or shell you already use.
 
-It reads your binds straight from `hyprctl -j binds` every time it opens.
-There is no separate list to keep up to date: change a bind in your config,
+![keyhud: searching binds and switching themes](media/demo.gif)
+
+I kept forgetting my own binds, and every cheat sheet I tried was a list I
+had to keep in sync by hand. This one reads your binds straight from
+`hyprctl -j binds` every time it opens: change a bind in your config,
 reload, and the sheet already shows it.
 
 Three looks so far:
 
+| alien | jurassic | automata |
+| --- | --- | --- |
+| ![alien](media/alien.png) | ![jurassic](media/jurassic.png) | ![automata](media/automata.png) |
+
 - **alien**: green-phosphor CRT terminal with scanlines
-- **jurassic**: holographic map table with contour lines
+- **jurassic**: holographic map table with contour lines that drift with
+  the mouse
 - **automata**: dark ink on beige paper, with hard offset shadows
 
 ## Requirements
@@ -25,7 +33,7 @@ Three looks so far:
 ## Install
 
 ```sh
-git clone https://github.com/<you>/keyhud ~/.config/quickshell/keyhud
+git clone https://github.com/Coimbrice/keyhud ~/.config/quickshell/keyhud
 ```
 
 Start it with Hyprland and bind a key to open it. In `hyprland.conf`:
@@ -130,12 +138,19 @@ make lint   # qmllint over the QML files
 To try changes, symlink the clone into `~/.config/quickshell/keyhud` and
 run `qs -c keyhud` in a terminal to see its log.
 
+`KEYHUD_DEMO=1 qs -c keyhud` shows the sample binds in `demo/binds.json`
+on a plain background instead of your own binds and desktop. The
+screenshots above were taken that way.
+
 ## Credits
 
 Based on the code of the keybind cheat sheet in
 [SekaiPop](https://github.com/Blapples/SekaiPop) by Blapples. The panel
 grouping follows the one in end-4's
 [Illogical Impulse](https://github.com/end-4/dots-hyprland).
+
+I built keyhud with help from Claude, which helped with the code, the
+review and the organization of the repo.
 
 ## License
 
